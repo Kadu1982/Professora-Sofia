@@ -1,0 +1,736 @@
+* { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+
+.aula-body {
+  margin: 0;
+  background: #202124;
+  color: #e8eaed;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Background Estátua da Liberdade — só durante a sala (não no lobby) ──
+   Estratégia: imagem fica em ::before com z-index 0, atrás de tudo.
+   Elementos com position: fixed/absolute já ficam acima naturalmente.
+   Sem mexer em position/z-index dos filhos (preserva o layout original). */
+.aula-body.em-sala {
+  background-color: #0f1428;
+}
+.aula-body.em-sala::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(15, 20, 40, 0.78), rgba(15, 20, 40, 0.78)),
+    url('/images/bg-conversa.png') center/cover no-repeat;
+  z-index: 0;
+  pointer-events: none;
+}
+.aula-body.em-sala::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* A sala e seus elementos continuam com o visual original (#202124 + cards).
+   Mas para o background aparecer nas "brechas", deixamos a sala transparente. */
+.aula-body.em-sala #tela-sala {
+  background: transparent;
+}
+/* O topbar e controles ganham fundo semi-transparente para legibilidade sobre a imagem */
+.aula-body.em-sala .sala-topbar {
+  background: rgba(32, 33, 36, 0.92);
+  backdrop-filter: blur(8px);
+}
+.aula-body.em-sala .sala-controls {
+  background: rgba(32, 33, 36, 0.92);
+  backdrop-filter: blur(8px);
+}
+/* Card da professora com fundo sólido para não "vazar" a imagem */
+.aula-body.em-sala .tile-prof {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+/* Stage com leve fundo para integrar com a imagem */
+.aula-body.em-sala .sala-stage {
+  background: transparent;
+}
+
+/* ── Lobby ── */
+.tela-lobby {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at top, #2d2e30 0%, #202124 60%);
+  padding: 1.5rem;
+}
+
+.lobby-card {
+  background: #292a2d;
+  color: #e8eaed;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.lobby-logo {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.lobby-preview {
+  padding: 0;
+  background: transparent;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.lobby-prof-hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.lobby-prof-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+.lobby-prof-hero-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+  text-align: left;
+}
+
+.lobby-card .text-muted {
+  color: #9aa0a6 !important;
+}
+.lobby-card .btn-link {
+  color: #9aa0a6;
+}
+.lobby-card .btn-link:hover {
+  color: #c4c7cc;
+}
+
+.btn-entrar {
+  background: #1a73e8;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+}
+.btn-entrar:hover { background: #1557b0; color: #fff; }
+
+/* ── Sala Meet ── */
+.tela-sala {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.sala-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.sala-titulo { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 500; }
+
+.badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ea4335;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dot-live {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: pulse-live 1.2s ease infinite;
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.sala-meta { font-size: 0.8rem; color: #9aa0a6; }
+.sala-meta .sep { margin: 0 6px; }
+
+.sala-stage {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  min-height: 0;
+}
+
+.tile {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #3c4043;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-prof {
+  width: min(92%, 960px);
+  height: min(72vh, 560px);
+  max-height: calc(100vh - 180px);
+}
+
+.tile-prof-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.prof-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.prof-video-fala {
+  display: none;
+}
+
+.prof-video-lipsync {
+  display: none;
+  z-index: 3;
+}
+
+.tile-prof.tile-lipsync-ativo .prof-video-lipsync {
+  display: block;
+}
+
+.tile-prof.tile-lipsync-ativo #video-prof-idle,
+.tile-prof.tile-lipsync-ativo #video-prof-fala,
+.tile-prof.tile-lipsync-ativo .prof-video-fala {
+  display: none !important;
+}
+
+.tile-prof.tile-midia-sofia .tile-prof-media,
+.tile-prof.tile-midia-foto .tile-prof-media {
+  display: block;
+}
+
+.tile-prof.tile-midia-sofia .tile-avatar-fallback,
+.tile-prof.tile-midia-foto .tile-avatar-fallback {
+  display: none;
+}
+
+.tile-prof:not(.tile-midia-sofia):not(.tile-midia-foto) .tile-prof-media {
+  display: none;
+}
+
+.tile-prof:not(.tile-midia-sofia):not(.tile-midia-foto) .tile-avatar-fallback {
+  display: flex;
+}
+
+.prof-foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+}
+
+.tile-prof.tile-midia-foto .prof-video,
+.tile-prof.tile-midia-foto #video-prof-idle,
+.tile-prof.tile-midia-foto #video-prof-fala,
+.tile-prof.tile-midia-foto #video-prof-lipsync {
+  display: none !important;
+}
+
+
+.tile-aluno {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 200px;
+  height: 140px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+.tile-avatar-fallback {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+  color: #fff;
+  background: var(--prof-gradient, linear-gradient(135deg, #16a34a, #22c55e));
+  z-index: 2;
+  transition: transform 0.2s;
+}
+
+.tile-prof.tile-speaking.tile-midia-sofia .prof-video-fala {
+  display: block;
+}
+
+.tile-prof.tile-speaking.tile-midia-sofia #video-prof-idle {
+  display: none;
+}
+
+.tile-prof.tile-speaking .tile-avatar-fallback {
+  animation: avatar-speak 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes avatar-speak {
+  from { transform: scale(1); }
+  to { transform: scale(1.04); }
+}
+
+.msg-evolucao {
+  margin: 8px 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(22, 163, 74, 0.12);
+  border: 1px solid rgba(22, 163, 74, 0.25);
+  color: #bbf7d0;
+  font-size: 0.82rem;
+}
+
+.tile-avatar-aluno {
+  width: 64px;
+  height: 64px;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #5f6368, #80868b);
+}
+
+.tile-wave {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.2) 100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tile-prof.tile-speaking .tile-wave {
+  opacity: 1;
+  background: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--prof-primary, #16a34a) 25%, transparent) 0%,
+    transparent 55%
+  );
+}
+
+.tile-caption {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  z-index: 3;
+}
+
+.tile-caption-sm { font-size: 0.72rem; left: 8px; bottom: 8px; }
+
+.tile-name { font-weight: 600; margin-right: 8px; }
+
+.tile-legenda {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 56px;
+  max-width: 85%;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  text-align: center;
+  line-height: 1.4;
+  z-index: 4;
+}
+
+/* Chat lateral */
+.sala-chat {
+  position: fixed;
+  top: 52px;
+  right: 0;
+  width: 340px;
+  max-width: 100%;
+  height: calc(100% - 52px - 80px);
+  background: #292a2d;
+  border-left: 1px solid #3c4043;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  transition: transform 0.25s ease;
+}
+
+.sala-chat.oculto {
+  transform: translateX(100%);
+  pointer-events: none;
+}
+
+.sala-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid #3c4043;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.btn-close-chat {
+  background: none;
+  border: none;
+  color: #9aa0a6;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.sala-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.msg-bubble {
+  max-width: 92%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.msg-prof {
+  align-self: flex-start;
+  background: #3c4043;
+  border-bottom-left-radius: 4px;
+}
+
+.msg-aluno {
+  align-self: flex-end;
+  background: #1a73e8;
+  border-bottom-right-radius: 4px;
+}
+
+.msg-stream {
+  opacity: 0.85;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.msg-idioma-hint {
+  font-size: 0.65rem;
+  color: #9aa0a6;
+  margin-top: 4px;
+  padding-left: 2px;
+}
+
+.msg-meta {
+  font-size: 0.65rem;
+  color: #9aa0a6;
+  margin-top: 2px;
+}
+
+.sala-chat-input {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #3c4043;
+}
+
+.sala-chat-input .form-control {
+  background: #3c4043;
+  border: none;
+  color: #e8eaed;
+  font-size: 0.85rem;
+  border-radius: 20px;
+}
+.sala-chat-input .form-control:focus {
+  background: #45474a;
+  color: #fff;
+  box-shadow: none;
+}
+
+.btn-send-chat {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: #1a73e8;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* Controles inferiores */
+.sala-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 12px 20px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+  z-index: 15;
+}
+
+.controls-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.ctrl-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 56px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  background: #3c4043;
+  color: #e8eaed;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ctrl-btn:hover { background: #5f6368; }
+.ctrl-btn.active { background: #1a73e8; }
+.ctrl-btn.mic-on {
+  background: #34a853;
+  box-shadow: 0 0 0 3px rgba(52, 168, 83, 0.35);
+  animation: mic-pulse 1.5s ease infinite;
+}
+.ctrl-btn.mic-on:hover { background: #2d8e47; }
+
+@keyframes mic-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(52, 168, 83, 0.35); }
+  50% { box-shadow: 0 0 0 8px rgba(52, 168, 83, 0.15); }
+}
+
+.ctrl-label {
+  font-size: 0.6rem;
+  font-weight: 500;
+}
+
+.ctrl-sair {
+  background: #ea4335;
+  border-radius: 28px;
+  width: auto;
+  padding: 0 20px;
+  flex-direction: row;
+  gap: 8px;
+  height: 48px;
+}
+.ctrl-sair:hover { background: #c5221f; }
+
+.overlay-loading {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.overlay-box {
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+}
+
+.banner-erro {
+  position: fixed;
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fce8e6;
+  color: #b91c1c;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  z-index: 150;
+  max-width: 92%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.toast-erro {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fce8e6;
+  color: #c5221f;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  z-index: 100;
+  max-width: 90%;
+}
+
+@media (max-width: 768px) {
+  .tile-aluno {
+    width: 120px;
+    height: 90px;
+    right: 12px;
+    bottom: 12px;
+  }
+  .sala-chat { width: 100%; }
+  .tile-prof { height: min(60vh, 400px); }
+}
+
+/* ── Botão cancelar stream ── */
+.msg-stream-wrap { position: relative; }
+.btn-cancelar-stream {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  z-index: 5;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.btn-cancelar-stream:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* ── Botão "Não entendi" (pede recast) ── */
+.btn-nao-entendi {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.btn-nao-entendi:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.btn-nao-entendi:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn-nao-entendi i { font-size: 0.85rem; }
+
+/* ── Animação dos dots de "Pensando/Escrevendo" ── */
+.status-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.status-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+  animation: status-dots-bounce 1.2s infinite ease-in-out;
+}
+.status-dots span:nth-child(1) { animation-delay: 0s; }
+.status-dots span:nth-child(2) { animation-delay: 0.15s; }
+.status-dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes status-dots-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+/* Cursor piscando na bolha em "Escrevendo" */
+.msg-bubble.msg-stream::after {
+  content: '▍';
+  display: inline-block;
+  margin-left: 2px;
+  color: currentColor;
+  animation: stream-cursor-blink 0.8s steps(2) infinite;
+  font-weight: 100;
+  opacity: 0.7;
+}
+@keyframes stream-cursor-blink {
+  0%, 50% { opacity: 0.7; }
+  51%, 100% { opacity: 0; }
+}

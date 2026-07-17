@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aula ao vivo — Talk Method IA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="css/aula-ia.css" rel="stylesheet" />
+</head>
+<body class="aula-body">
+
+<!-- Lobby (antes de entrar na sala) -->
+<div id="tela-lobby" class="tela-lobby">
+  <div class="lobby-card">
+    <div class="lobby-logo">
+      <i class="fas fa-video"></i>
+    </div>
+    <h1 class="h5 fw-bold mb-2">Aula de Speaking ao vivo</h1>
+    <p class="text-muted small mb-4">
+      Fale em inglês ou português — o microfone volta logo após a resposta. Use fone de ouvido para evitar eco.
+    </p>
+    <div class="lobby-preview mb-4">
+      <div class="lobby-prof-hero">
+        <img class="lobby-prof-hero-img" id="lobby-foto-prof" src="/images/professora-sofia.png" alt="Professora Sofia" />
+        <div class="lobby-prof-hero-info">
+          <div class="fw-semibold" id="lobby-nome-prof">Professora Sofia</div>
+          <div class="small opacity-75" id="lobby-nivel">Básico · Unidade <span id="lobby-unidade">—</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="small mb-3">Olá, <strong id="lobby-nome-aluno">Aluno</strong></p>
+    <button class="btn btn-entrar w-100" id="btn-entrar-sala">
+      <i class="fas fa-door-open me-2"></i>Entrar na aula
+    </button>
+    <a href="/" class="btn btn-link btn-sm mt-3 text-muted" id="link-voltar">Voltar à plataforma</a>
+  </div>
+</div>
+
+<!-- Sala (estilo Meet) -->
+<div id="tela-sala" class="tela-sala" style="display:none;">
+  <header class="sala-topbar">
+    <div class="sala-titulo">
+      <span class="badge-live"><span class="dot-live"></span> Ao vivo</span>
+      <span id="sala-titulo-text">Speaking Practice</span>
+    </div>
+    <div class="sala-meta">
+      <span id="sala-timer">00:00</span>
+      <span class="sep">·</span>
+      <span id="sala-unidade-label">Unit —</span>
+    </div>
+  </header>
+
+  <main class="sala-stage">
+    <!-- Professora (tile principal) -->
+    <div class="tile tile-prof" id="tile-prof">
+      <div class="tile-prof-media" id="tile-prof-media">
+        <img
+          id="tile-prof-foto"
+          class="prof-foto"
+          src="/images/professora-sofia.png"
+          alt="Professora"
+          style="display:none"
+        />
+        <video
+          id="video-prof-idle"
+          class="prof-video"
+          src="/images/professora-sofia-idle.mp4"
+          poster="/images/professora-sofia.png"
+          autoplay
+          loop
+          muted
+          playsinline
+        ></video>
+        <video
+          id="video-prof-fala"
+          class="prof-video prof-video-fala"
+          src="/images/professora-sofia-fala.mp4"
+          poster="/images/professora-sofia.png"
+          loop
+          muted
+          playsinline
+        ></video>
+        <video
+          id="video-prof-lipsync"
+          class="prof-video prof-video-lipsync"
+          poster="/images/professora-sofia.png"
+          playsinline
+        ></video>
+      </div>
+      <div class="tile-avatar tile-avatar-fallback" id="tile-prof-avatar">
+        <i class="fas fa-seedling"></i>
+      </div>
+      <div class="tile-wave" id="tile-prof-wave" aria-hidden="true"></div>
+      <div class="tile-caption">
+        <span class="tile-name" id="tile-prof-nome">Professora Sofia</span>
+        <span class="tile-status" id="tile-prof-status">Conectando...</span>
+      </div>
+      <div class="tile-legenda" id="tile-legenda" style="display:none;"></div>
+    </div>
+
+    <!-- Aluno (picture-in-picture) -->
+    <div class="tile tile-aluno" id="tile-aluno">
+      <div class="tile-avatar tile-avatar-aluno" id="tile-aluno-iniciais">A</div>
+      <div class="tile-caption tile-caption-sm">
+        <span class="tile-name" id="tile-aluno-nome">Você</span>
+        <span class="tile-status"><i class="fas fa-microphone-slash text-danger" id="icon-mic-status"></i></span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Painel de conversa (transcrição) -->
+  <aside class="sala-chat" id="painel-chat">
+    <div class="sala-chat-header">
+      <span><i class="fas fa-comments me-2"></i>Conversa</span>
+      <button type="button" class="btn-close-chat" id="btn-fechar-chat" title="Ocultar">&times;</button>
+    </div>
+    <div class="sala-chat-messages" id="chat-messages"></div>
+    <div class="sala-chat-input">
+      <input type="text" id="chat-input" class="form-control" placeholder="Opcional: digite em inglês se preferir..." autocomplete="off" />
+      <button type="button" class="btn btn-nao-entendi" id="btn-nao-entendi" title="Pedir para a Professora reformular com a frase correta em inglês">
+        <i class="fas fa-repeat"></i>
+        <span>Não entendi</span>
+      </button>
+      <button type="button" class="btn btn-send-chat" id="btn-enviar-texto" title="Enviar">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Barra de controles -->
+  <footer class="sala-controls">
+    <div class="controls-group">
+      <button type="button" class="ctrl-btn active" id="btn-mic" title="Microfone sempre ativo — clique só para silenciar">
+        <i class="fas fa-microphone"></i>
+        <span class="ctrl-label">Mic</span>
+      </button>
+      <button type="button" class="ctrl-btn" id="btn-voz-prof" title="Voz da professora">
+        <i class="fas fa-volume-up"></i>
+        <span class="ctrl-label">Voz</span>
+      </button>
+      <button type="button" class="ctrl-btn active" id="btn-chat" title="Conversa">
+        <i class="fas fa-comment-alt"></i>
+        <span class="ctrl-label">Chat</span>
+      </button>
+    </div>
+    <button type="button" class="ctrl-btn ctrl-sair" id="btn-sair" title="Sair da aula">
+      <i class="fas fa-phone-slash"></i>
+      <span class="ctrl-label">Sair</span>
+    </button>
+  </footer>
+</div>
+
+<div id="overlay-loading" class="overlay-loading" style="display:none;">
+  <div class="overlay-box">
+    <div class="spinner-border text-light mb-3" role="status"></div>
+    <p class="mb-0 fw-semibold" id="overlay-msg">A professora está respondendo...</p>
+    <p class="small text-white-50 mt-2 mb-0">Resposta em streaming — texto aparece aos poucos</p>
+  </div>
+</div>
+<div id="toast-erro" class="toast-erro" style="display:none;"></div>
+<div id="banner-erro" class="banner-erro" style="display:none;">
+  <span id="banner-erro-texto"></span>
+  <button type="button" class="btn btn-sm btn-light ms-2" id="btn-reconectar">Tentar de novo</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="js/audio-filtro.js"></script>
+<script src="js/aula-ia.js"></script>
+</body>
+</html>

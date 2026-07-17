@@ -1,0 +1,16 @@
+{
+  "1": { "titulo": "Subject Pronouns", "palavras": ["I", "you", "he", "she", "we", "they", "it", "me", "him", "her", "us", "them"], "gramatica": ["Subject pronouns", "I am / you are / he is"] },
+  "2": { "titulo": "Greetings", "palavras": ["hello", "hi", "goodbye", "bye", "good", "morning", "afternoon", "evening", "night", "please", "thanks", "sorry"], "gramatica": ["Greetings and farewells", "How are you?"] },
+  "3": { "titulo": "Verb To be present", "palavras": ["am", "is", "are", "be", "fine", "well", "happy", "sad", "tired", "here", "there"], "gramatica": ["Verb to be affirmative", "Contractions: I'm, you're, he's"] },
+  "4": { "titulo": "Articles", "palavras": ["a", "an", "the", "book", "pen", "apple", "house", "cat", "dog"], "gramatica": ["Articles a, an, the"] },
+  "5": { "titulo": "Introducing yourself", "palavras": ["name", "my", "your", "from", "country", "city", "years", "old", "student", "teacher"], "gramatica": ["What is your name?", "I am from...", "Nice to meet you"] },
+  "6": { "titulo": "Singular and Plural", "palavras": ["one", "two", "books", "cats", "children", "man", "men", "woman", "women"], "gramatica": ["Plural -s", "Irregular plurals"] },
+  "7": { "titulo": "Verb To be negative present", "palavras": ["not", "isn't", "aren't", "no"], "gramatica": ["To be negative: I am not, he is not"] },
+  "8": { "titulo": "Verb To be question present", "palavras": ["what", "who", "where", "how", "yes", "no"], "gramatica": ["Questions with to be: Are you...? Is he...?"] },
+  "17": { "titulo": "Days of the week", "palavras": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "today", "tomorrow", "yesterday"], "gramatica": ["Days of the week", "On Monday..."] },
+  "27": { "titulo": "Simple Future", "palavras": ["will", "won't", "future", "plan", "tomorrow", "next", "week"], "gramatica": ["Will + verb", "Won't"] },
+  "43": { "titulo": "Present Continuous", "palavras": ["now", "right", "moment", "working", "studying", "eating", "going"], "gramatica": ["Am/Is/Are + -ing"] },
+  "48": { "titulo": "Simple Past", "palavras": ["yesterday", "last", "went", "did", "was", "were", "had"], "gramatica": ["Past simple regular and irregular"] },
+  "72": { "titulo": "If conditional", "palavras": ["if", "when", "would", "could", "rain", "stay", "home"], "gramatica": ["First conditional: If..., I will..."] },
+  "80": { "titulo": "Reported Speech", "palavras": ["said", "told", "asked", "that", "he", "she"], "gramatica": ["Reported speech: He said that..."] }
+}

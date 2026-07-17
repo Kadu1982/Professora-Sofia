@@ -1,0 +1,21 @@
+{
+  "name": "professora-sofia-mvp",
+  "version": "1.0.0",
+  "description": "MVP da Professora Sofia — Chat com IA restrito ao vocabulário do aluno",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "gerar-video-sofia": "node scripts/generate-prof-sofia-video.mjs"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "better-sqlite3": "^12.11.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0"
+  }
+}

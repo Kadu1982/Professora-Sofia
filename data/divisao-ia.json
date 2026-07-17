@@ -1,0 +1,84 @@
+{
+  "fonte": "Divisão do conteúdo - IA.docx",
+  "atualizadoEm": "2026-05-22",
+  "grupos": [
+    {
+      "id": "ia1",
+      "rotulo": "IA 1 — Primeiro grupo",
+      "professoraEstagio": "iniciante",
+      "unidadesDe": 1,
+      "unidadesAte": 20,
+      "unidades": [
+        { "numero": 1, "titulo": "Subject Pronouns" },
+        { "numero": 2, "titulo": "Greetings" },
+        { "numero": 3, "titulo": "Verb To be (present affirmative normal e contration)" },
+        { "numero": 4, "titulo": "Articles" },
+        { "numero": 5, "titulo": "Introducing yourself" },
+        { "numero": 6, "titulo": "Singular and plural" },
+        { "numero": 7, "titulo": "Verbo to be (present negative)" },
+        { "numero": 8, "titulo": "Verbo to be (present question)" },
+        { "numero": 9, "titulo": "Demonstrative Pronouns" },
+        { "numero": 10, "titulo": "Verbs - Regular and Irregular" },
+        { "numero": 11, "titulo": "Verb To be (past - affirmative)" },
+        { "numero": 12, "titulo": "Time - Graphic A" },
+        { "numero": 13, "titulo": "Verb To be (past - negative)" },
+        { "numero": 14, "titulo": "Verb To be (past - questions)" },
+        { "numero": 15, "titulo": "How to say AGORA" },
+        { "numero": 16, "titulo": "Simple Present" },
+        { "numero": 17, "titulo": "Days of the week" },
+        { "numero": 18, "titulo": "Months of the year" },
+        { "numero": 19, "titulo": "Seasons of the year" },
+        { "numero": 20, "titulo": "Basic Connections" }
+      ]
+    },
+    {
+      "id": "ia2",
+      "rotulo": "IA 2 — Segundo grupo",
+      "professoraEstagio": "intermediario",
+      "unidadesDe": 21,
+      "unidadesAte": 40,
+      "unidades": [
+        { "numero": 21, "titulo": "Business Expressions 1" },
+        { "numero": 22, "titulo": "Date" },
+        { "numero": 23, "titulo": "Cardinal Numbers" },
+        { "numero": 24, "titulo": "Hour" },
+        { "numero": 25, "titulo": "Interrogative Pronouns - Part 1" },
+        { "numero": 26, "titulo": "Interrogative Pronouns - Part 2" },
+        { "numero": 27, "titulo": "Simple Future" },
+        { "numero": 28, "titulo": "Adjectives" },
+        { "numero": 29, "titulo": "Concepts" },
+        { "numero": 30, "titulo": "Speaking Verbs" },
+        { "numero": 31, "titulo": "English Foundation" },
+        { "numero": 32, "titulo": "Preference Verbs" },
+        { "numero": 33, "titulo": "Verb To Have" },
+        { "numero": 34, "titulo": "Future Going To" },
+        { "numero": 35, "titulo": "Countable and Uncountable" },
+        { "numero": 36, "titulo": "Quantifiers" },
+        { "numero": 37, "titulo": "How to say MUITO" },
+        { "numero": 38, "titulo": "There is / There are" },
+        { "numero": 39, "titulo": "There was / There were" },
+        { "numero": 40, "titulo": "Progressive Future" }
+      ]
+    },
+    {
+      "id": "ia3",
+      "rotulo": "IA 3 — Terceiro grupo",
+      "professoraEstagio": "avancado",
+      "unidadesDe": 41,
+      "unidadesAte": 50,
+      "unidades": [
+        { "numero": 41, "titulo": "Types of future sentences" },
+        { "numero": 42, "titulo": "Temporalativity Prepositions" },
+        { "numero": 43, "titulo": "Present Continuous" },
+        { "numero": 44, "titulo": "Past Continuous" },
+        { "numero": 45, "titulo": "Punctual Prepositions" },
+        { "numero": 46, "titulo": "Places Prepositions A / B (doc: duas entradas Unit 46)" },
+        { "numero": 47, "titulo": "Endless Prepositions" },
+        { "numero": 48, "titulo": "Simple Past" },
+        { "numero": 49, "titulo": "Present Perfect" },
+        { "numero": 50, "titulo": "Present Perfect Continuous" }
+      ]
+    }
+  ],
+  "observacao": "Unidades 51–110 (Advanced I–IV e tópicos finais) não constam no .docx — definir em validação ou documento complementar."
+}

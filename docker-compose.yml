@@ -1,0 +1,13 @@
+services:
+  professora-sofia:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: professora-sofia
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "3030:3030"
+    volumes:
+      - ./data:/app/data

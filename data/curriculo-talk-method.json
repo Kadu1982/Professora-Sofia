@@ -1,0 +1,243 @@
+{
+  "plataforma": "Talk Method — Inglês Aprenda de Uma Vez",
+  "baseUrl": "https://inglesaprendadeumavez.com/student-area",
+  "tiposAula": [
+    "Video Class (gramática)",
+    "Class Material | Let's Practice (PDF)",
+    "Listening Practice",
+    "Speaking Practice"
+  ],
+  "rotas": {
+    "login": "/",
+    "home": "/home",
+    "capitulo": "/chapter/{id}",
+    "listaAulasCapitulo": "/classesList/{id}",
+    "aula": "/class/{capituloId}/{aulaId}",
+    "listening": "/listening/{id}",
+    "listeningLista": "/listeningList"
+  },
+  "mapeamentoEstagios": {
+    "iniciante": {
+      "rotulo": "Básico",
+      "capitulos": [1, 2],
+      "unidadesDe": 1,
+      "unidadesAte": 16,
+      "identidadeSofia": "Professora Sofia — Básico (warm, simple, patient)"
+    },
+    "intermediario": {
+      "rotulo": "Intermediário",
+      "capitulos": [3, 4, 5, 6],
+      "unidadesDe": 17,
+      "unidadesAte": 50,
+      "identidadeSofia": "Professora Sofia — Intermediário (daily life, routines, clearer questions)"
+    },
+    "avancado": {
+      "rotulo": "Avançado",
+      "capitulos": [7, 8, 9, 10, 11, 12],
+      "unidadesDe": 51,
+      "unidadesAte": 100,
+      "identidadeSofia": "Professora Sofia — Avançado (richer ideas, still controlled vocabulary)"
+    }
+  },
+  "modulosHome": [
+    {
+      "id": 1,
+      "nome": "Módulo 1",
+      "niveis": ["Basic", "Intermediate I", "Intermediate II", "Intermediate IV"]
+    },
+    {
+      "id": 2,
+      "nome": "Módulo 2",
+      "niveis": ["Advanced I", "Advanced II", "Advanced III", "Advanced IV"]
+    }
+  ],
+  "capitulos": [
+    {
+      "id": 1,
+      "titulo": "Discovering English",
+      "estagio": "iniciante",
+      "unidades": [
+        { "numero": 1, "titulo": "Subject Pronouns" },
+        { "numero": 2, "titulo": "Greetings" },
+        { "numero": 3, "titulo": "Verb To be (present affirmative normal e contration)" },
+        { "numero": 4, "titulo": "Articles" },
+        { "numero": 5, "titulo": "Introducing yourself" },
+        { "numero": 6, "titulo": "Singular and Plural" },
+        { "numero": 7, "titulo": "Verbo to be (present - negative)" },
+        { "numero": 8, "titulo": "Verbo to be (present - question)" }
+      ]
+    },
+    {
+      "id": 2,
+      "titulo": "Basic",
+      "estagio": "iniciante",
+      "unidades": [
+        { "numero": 9, "titulo": "Demonstrative Pronouns" },
+        { "numero": 10, "titulo": "Verbs (Regular and Irregular)" },
+        { "numero": 11, "titulo": "Verb To be (past - affirmative)" },
+        { "numero": 12, "titulo": "Time Graphic A" },
+        { "numero": 13, "titulo": "Verb To be (past - negative)" },
+        { "numero": 14, "titulo": "Verb To be (past - question)" },
+        { "numero": 15, "titulo": "How to say AGORA" },
+        { "numero": 16, "titulo": "Simple Present" }
+      ]
+    },
+    {
+      "id": 3,
+      "titulo": "Intermediate I",
+      "estagio": "intermediario",
+      "unidades": [
+        { "numero": 17, "titulo": "Days of the week" },
+        { "numero": 18, "titulo": "Months of the year" },
+        { "numero": 19, "titulo": "Seasons of the year" },
+        { "numero": 20, "titulo": "Basic Connections" },
+        { "numero": 21, "titulo": "Business Expressions 1" },
+        { "numero": 22, "titulo": "Date" },
+        { "numero": 23, "titulo": "Cardinal Numbers" },
+        { "numero": 24, "titulo": "Hour" }
+      ]
+    },
+    {
+      "id": 4,
+      "titulo": "Intermediate II",
+      "estagio": "intermediario",
+      "unidades": [
+        { "numero": 25, "titulo": "Interrogative Pronouns - Part 1" },
+        { "numero": 26, "titulo": "Interrogative Pronouns - Part 2" },
+        { "numero": 27, "titulo": "Simple Future" },
+        { "numero": 28, "titulo": "Adjectives" },
+        { "numero": 29, "titulo": "Concepts" },
+        { "numero": 30, "titulo": "Speaking Verbs" },
+        { "numero": 31, "titulo": "English Foundation" },
+        { "numero": 32, "titulo": "Preference Verbs" }
+      ]
+    },
+    {
+      "id": 5,
+      "titulo": "Intermediate III",
+      "estagio": "intermediario",
+      "unidades": [
+        { "numero": 33, "titulo": "Verb To Have" },
+        { "numero": 34, "titulo": "Future Going To" },
+        { "numero": 35, "titulo": "Countable and Uncountable" },
+        { "numero": 36, "titulo": "Quantifiers" },
+        { "numero": 37, "titulo": "How to say MUITO" },
+        { "numero": 38, "titulo": "There is / There are" },
+        { "numero": 39, "titulo": "There was / There were" },
+        { "numero": 40, "titulo": "Progressive Future" }
+      ]
+    },
+    {
+      "id": 6,
+      "titulo": "Intermediate IV",
+      "estagio": "intermediario",
+      "unidades": [
+        { "numero": 41, "titulo": "Types of future sentences" },
+        { "numero": 42, "titulo": "Temporalativity Prepositions" },
+        { "numero": 43, "titulo": "Present Continuous" },
+        { "numero": 44, "titulo": "Past Continuous" },
+        { "numero": 45, "titulo": "Punctual Prepositions" },
+        { "numero": 46, "titulo": "Places Prepositions" },
+        { "numero": 47, "titulo": "Endless Prepositions" },
+        { "numero": 48, "titulo": "Simple Past" },
+        { "numero": 49, "titulo": "Present Perfect" },
+        { "numero": 50, "titulo": "Present Perfect Continuous" }
+      ]
+    },
+    {
+      "id": 7,
+      "titulo": "Advanced I",
+      "estagio": "avancado",
+      "unidades": [
+        { "numero": 51, "titulo": "Time-Line Revision" },
+        { "numero": 52, "titulo": "Verb To get" },
+        { "numero": 53, "titulo": "Business Expressions 2" },
+        { "numero": 54, "titulo": "How/as/like" },
+        { "numero": 55, "titulo": "Interpretation/Vocabulary – At the hotel" },
+        { "numero": 56, "titulo": "Adverbs" },
+        { "numero": 57, "titulo": "Preposition WITH" },
+        { "numero": 58, "titulo": "Verbs Preposition" },
+        { "numero": 59, "titulo": "Past Perfect" },
+        { "numero": 60, "titulo": "Past Perfect Coninuous" },
+        { "numero": 61, "titulo": "Interpretation/Vocabulary – In a store" },
+        { "numero": 62, "titulo": "Subject Pronouns" }
+      ]
+    },
+    {
+      "id": 8,
+      "titulo": "Advanced II",
+      "estagio": "avancado",
+      "unidades": [
+        { "numero": 63, "titulo": "Direct and Indirect Objects Pronouns" },
+        { "numero": 64, "titulo": "Possessive Pronouns" },
+        { "numero": 65, "titulo": "Reflexive Pronouns" },
+        { "numero": 66, "titulo": "Business Expressions 3" },
+        { "numero": 67, "titulo": "Modals 1" },
+        { "numero": 68, "titulo": "Modals 2" },
+        { "numero": 69, "titulo": "Can / Can't / Cannot" },
+        { "numero": 70, "titulo": "Nobody/No one/Nowhere" },
+        { "numero": 71, "titulo": "Business Expressions 4" },
+        { "numero": 72, "titulo": "If (conditional)" },
+        { "numero": 73, "titulo": "To wish – To desire – To want" },
+        { "numero": 74, "titulo": "All/All of most/most of no/none of" }
+      ]
+    },
+    {
+      "id": 9,
+      "titulo": "Advanced III",
+      "estagio": "avancado",
+      "unidades": [
+        { "numero": 75, "titulo": "All/ Every/ Whole" },
+        { "numero": 76, "titulo": "Both/Both of Neither/Neither of Either/Either of" },
+        { "numero": 77, "titulo": "Business Expressions 5" },
+        { "numero": 78, "titulo": "It seems/ It sounds/ It is/ It looks like" },
+        { "numero": 79, "titulo": "Text Interpretation – In an airport" },
+        { "numero": 80, "titulo": "Reported Speech" },
+        { "numero": 81, "titulo": "So/Such Enough/too" },
+        { "numero": 82, "titulo": "Active and Passive Voice" },
+        { "numero": 83, "titulo": "Text Interpretation – At the restaurant" },
+        { "numero": 84, "titulo": "Business Expression 6" },
+        { "numero": 85, "titulo": "Comparative" },
+        { "numero": 86, "titulo": "Comparation Expressions" }
+      ]
+    },
+    {
+      "id": 10,
+      "titulo": "Advanced IV",
+      "estagio": "avancado",
+      "unidades": [
+        { "numero": 87, "titulo": "Superlative" },
+        { "numero": 88, "titulo": "Business Expressions 7" },
+        { "numero": 89, "titulo": "By / Until / By the time" },
+        { "numero": 90, "titulo": "Business Expressions 8" },
+        { "numero": 91, "titulo": "Unless/as long as provided/providing" },
+        { "numero": 92, "titulo": "Although / though / even though / in spite of / despite" },
+        { "numero": 93, "titulo": "Business Expressions 9" },
+        { "numero": 94, "titulo": "Text Interpretation – In the bank" },
+        { "numero": 95, "titulo": "Phrasal Verbs 1" },
+        { "numero": 96, "titulo": "Phrasal Verbs 2" },
+        { "numero": 97, "titulo": "Business Expressions 10" },
+        { "numero": 98, "titulo": "Location Prepositions" },
+        { "numero": 99, "titulo": "How to ask directions" },
+        { "numero": 100, "titulo": "Moviment Verbs" }
+      ]
+    },
+    {
+      "id": 12,
+      "titulo": "You did it!",
+      "estagio": "avancado",
+      "unidades": [
+        { "numero": 101, "titulo": "Connectives Sequencing" },
+        { "numero": 102, "titulo": "Connectives Conclusion" },
+        { "numero": 103, "titulo": "Connectives Opinion" },
+        { "numero": 104, "titulo": "Connectives Addition" },
+        { "numero": 105, "titulo": "Connectives Emphasis" },
+        { "numero": 106, "titulo": "Connectives Contrast" },
+        { "numero": 107, "titulo": "Connectives Illustration" },
+        { "numero": 108, "titulo": "Connectives Cause and Effect" },
+        { "numero": 109, "titulo": "Connectives Comparison" },
+        { "numero": 110, "titulo": "Connectives Persuasion" }
+      ]
+    }
+  ]
+}

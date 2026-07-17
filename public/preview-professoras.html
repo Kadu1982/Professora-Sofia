@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preview — Professoras por nível</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #1e293b; }
+    .hero { background: linear-gradient(135deg, #1e1b4b, #312e81); color: #fff; padding: 2.5rem 0; }
+    .card-prof {
+      border: none;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+      height: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card-prof:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12); }
+    .card-prof.selected { outline: 3px solid #6366f1; outline-offset: 2px; }
+    .card-top { padding: 1.25rem; color: #fff; }
+    .card-top.basico { background: linear-gradient(135deg, #16a34a, #22c55e); }
+    .card-top.inter { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+    .card-top.avanc { background: linear-gradient(135deg, #be185d, #ec4899); }
+    .avatar-wrap {
+      width: 180px;
+      height: 180px;
+      margin: -90px auto 1rem;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid #fff;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      background: #e2e8f0;
+    }
+    .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+    .spec-row { display: flex; justify-content: space-between; padding: 0.45rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-label { color: #64748b; }
+    .spec-value { font-weight: 600; text-align: right; max-width: 58%; }
+    .btn-test-voz { border-radius: 20px; font-size: 0.82rem; }
+    .badge-nivel { font-size: 0.72rem; padding: 0.35em 0.7em; border-radius: 20px; }
+  </style>
+</head>
+<body>
+
+<header class="hero text-center">
+  <div class="container">
+    <h1 class="h3 fw-bold mb-2">Preview — 3 professoras distintas</h1>
+    <p class="mb-0 opacity-75 mx-auto" style="max-width: 640px;">
+      Cada nível tem <strong>avatar</strong>, <strong>voz</strong> e <strong>temperatura de resposta</strong> próprios.
+      Clique em uma carta para selecionar e use o botão de voz para ouvir a diferença.
+    </p>
+    <a href="/" class="btn btn-sm btn-light mt-3"><i class="fas fa-arrow-left me-1"></i>Voltar ao MVP</a>
+  </div>
+</header>
+
+<main class="container py-5">
+  <div class="row g-4" id="grid-professoras"></div>
+
+  <div class="alert alert-info mt-4 small" role="alert">
+    <strong>Temperatura:</strong> Sofia (0.42) responde de forma mais previsível e simples;
+    Paul (0.65) equilibra criatividade; Kate (0.82) traz respostas mais variadas e sofisticadas.
+    Na aula ao vivo os valores são um pouco menores para manter frases curtas.
+  </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+'use strict';
+
+var selecionada = 'iniciante';
+var professoras = {};
+
+var FRASE_DEMO = {
+  iniciante: "Hi! I am Sofia. Let's practice easy English together. How are you today?",
+  intermediario: "Hello! I'm Paul. Tell me about your day — what did you do this morning?",
+  avancado: "Hi! I'm Kate. Let's discuss something from your advanced units. What topic interests you?",
+};
+
+function selecionarVoz(cfg) {
+  if (!window.speechSynthesis) return null;
+  var voices = window.speechSynthesis.getVoices();
+  var lang = (cfg && cfg.lang) || 'en-US';
+  var prefs = (cfg && cfg.preferencias) || ['Female'];
+  var i, match;
+  for (i = 0; i < prefs.length; i++) {
+    match = voices.find(function (v) {
+      return v.lang.indexOf(lang.split('-')[0]) === 0 && v.name.indexOf(prefs[i]) >= 0;
+    });
+    if (match) return match;
+  }
+  return voices.find(function (v) { return v.lang.startsWith('en'); });
+}
+
+function testarVoz(estagio) {
+  var p = professoras[estagio];
+  if (!p || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(FRASE_DEMO[estagio]);
+  var cfg = p.voz || {};
+  u.lang = cfg.lang || 'en-US';
+  u.rate = cfg.rate || 1;
+  u.pitch = cfg.pitch || 1;
+  var voz = selecionarVoz(cfg);
+  if (voz) u.voice = voz;
+  window.speechSynthesis.speak(u);
+}
+
+function renderCard(estagio, p) {
+  var topClass = estagio === 'iniciante' ? 'basico' : estagio === 'intermediario' ? 'inter' : 'avanc';
+  var badge = estagio === 'iniciante' ? '🟢 Básico' : estagio === 'intermediario' ? '🔵 Intermediário' : '🔴 Avançado';
+  var did = (p.vozDid && p.vozDid.voiceId) ? p.vozDid.voiceId : '—';
+
+  return (
+    '<div class="col-md-4">' +
+      '<div class="card-prof' + (selecionada === estagio ? ' selected' : '') + '" data-estagio="' + estagio + '">' +
+        '<div class="card-top ' + topClass + ' text-center pb-5">' +
+          '<span class="badge bg-white text-dark badge-nivel">' + badge + '</span>' +
+          '<h2 class="h5 fw-bold mt-2 mb-0">' + p.nomeCompleto + '</h2>' +
+          '<p class="small mb-0 opacity-75">' + (p.cenario || p.nivel || '') + '</p>' +
+        '</div>' +
+        '<div class="card-body text-center pt-0">' +
+          '<div class="avatar-wrap">' +
+            '<img src="' + (p.avatar || '') + '" alt="' + p.nomeCompleto + '" />' +
+          '</div>' +
+          '<div class="text-start px-2">' +
+            '<div class="spec-row"><span class="spec-label">Chat (temp.)</span><span class="spec-value">' + (p.temperatureChat ?? '—') + '</span></div>' +
+            '<div class="spec-row"><span class="spec-label">Aula ao vivo</span><span class="spec-value">' + (p.temperatureAula ?? '—') + '</span></div>' +
+            '<div class="spec-row"><span class="spec-label">Voz (rate)</span><span class="spec-value">' + ((p.voz && p.voz.rate) || '—') + '</span></div>' +
+            '<div class="spec-row"><span class="spec-label">Voz (pitch)</span><span class="spec-value">' + ((p.voz && p.voz.pitch) || '—') + '</span></div>' +
+            '<div class="spec-row"><span class="spec-label">D-ID voice</span><span class="spec-value small">' + did + '</span></div>' +
+          '</div>' +
+          '<button type="button" class="btn btn-outline-primary btn-test-voz mt-3" data-voz="' + estagio + '">' +
+            '<i class="fas fa-volume-up me-1"></i>Ouvir voz demo' +
+          '</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  );
+}
+
+function carregar() {
+  $.when(
+    $.getJSON('/api/professora/iniciante'),
+    $.getJSON('/api/professora/intermediario'),
+    $.getJSON('/api/professora/avancado')
+  ).done(function (a, b, c) {
+    professoras = {
+      iniciante: a[0],
+      intermediario: b[0],
+      avancado: c[0],
+    };
+    var html = '';
+    ['iniciante', 'intermediario', 'avancado'].forEach(function (est) {
+      html += renderCard(est, professoras[est]);
+    });
+    $('#grid-professoras').html(html);
+  });
+}
+
+$(document).ready(function () {
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = function () {
+      window.speechSynthesis.getVoices();
+    };
+  }
+  carregar();
+
+  $(document).on('click', '.card-prof', function () {
+    selecionada = $(this).data('estagio');
+    $('.card-prof').removeClass('selected');
+    $(this).addClass('selected');
+  });
+
+  $(document).on('click', '.btn-test-voz', function (e) {
+    e.stopPropagation();
+    testarVoz($(this).data('voz'));
+  });
+});
+</script>
+</body>
+</html>

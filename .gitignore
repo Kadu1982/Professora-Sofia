@@ -1,0 +1,19 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+
+# Dados locais e credenciais de produção
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.db-shm
+*.db-wal
+
+# Artefatos locais
+coverage/
+dist/
+tmp/

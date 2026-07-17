@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inglês Aprenda de Uma Vez — Área do Aluno</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <!-- Chat Widget CSS -->
+  <link href="css/professora-chat.css" rel="stylesheet" />
+
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+
+    body { background: #f0f2f5; min-height: 100vh; }
+
+    /* ── Navbar ── */
+    .navbar-custom {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .navbar-brand span { color: #a855f7; font-weight: 700; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid #e5e7eb;
+      min-height: calc(100vh - 60px);
+      padding: 1.5rem 0;
+      width: 240px;
+      flex-shrink: 0;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 20px; cursor: pointer; color: #6b7280;
+      font-size: 0.875rem; font-weight: 500;
+      border-left: 3px solid transparent;
+      transition: all .2s;
+    }
+    .sidebar-item:hover { color: #7c3aed; background: #f5f3ff; }
+    .sidebar-item.active {
+      color: #7c3aed; background: #f5f3ff;
+      border-left-color: #7c3aed;
+    }
+    .sidebar-item i { width: 20px; text-align: center; font-size: 1rem; }
+
+    /* ── Main content ── */
+    .main-content { flex: 1; padding: 2rem; }
+
+    /* ── Cards das aulas ── */
+    .lesson-card {
+      background: #fff; border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      padding: 1.5rem; margin-bottom: 1rem;
+      transition: box-shadow .2s;
+    }
+    .lesson-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .lesson-badge {
+      font-size: 0.7rem; font-weight: 600; padding: 4px 10px;
+      border-radius: 20px; text-transform: uppercase; letter-spacing: .5px;
+    }
+    .badge-iniciante  { background: #dcfce7; color: #16a34a; }
+    .badge-intermed   { background: #dbeafe; color: #1d4ed8; }
+    .badge-avancado   { background: #fce7f3; color: #be185d; }
+    .lesson-progress  { height: 6px; border-radius: 3px; background: #e5e7eb; }
+    .lesson-progress .bar { height: 100%; border-radius: 3px; background: #7c3aed; }
+
+    /* ── Painel de configuração do MVP ── */
+    .mvp-config {
+      background: #fff;
+      border: 2px dashed #c4b5fd;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .mvp-config h6 { color: #7c3aed; font-weight: 700; margin-bottom: 1rem; }
+    .mvp-config label { font-size: 0.8rem; font-weight: 600; color: #374151; }
+    .mvp-config .form-select,
+    .mvp-config .form-control { font-size: 0.85rem; }
+    .btn-iniciar {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: #fff; border: none; font-weight: 600;
+      border-radius: 8px; padding: 8px 20px; font-size: 0.875rem;
+    }
+    .btn-iniciar:hover { opacity: .9; color: #fff; }
+
+    /* ── Alert API key ── */
+    #alerta-apikey {
+      background: #fef3c7; border: 1px solid #fbbf24;
+      border-radius: 10px; padding: 12px 16px;
+      font-size: 0.82rem; color: #92400e; margin-bottom: 1rem;
+    }
+    #alerta-apikey code {
+      background: #fde68a; padding: 1px 6px; border-radius: 4px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ════════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg navbar-custom py-2">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand text-white fw-bold" href="#">
+      Inglês <span>Aprenda de Uma Vez</span>
+    </a>
+    <div class="d-flex align-items-center gap-3">
+      <span class="text-white-50 small" id="span-nome-aluno">Bem-vindo, Aluno</span>
+      <div class="rounded-circle bg-purple d-flex align-items-center justify-content-center"
+           style="width:36px;height:36px;background:#7c3aed;">
+        <i class="fas fa-user text-white" style="font-size:.85rem;"></i>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ LAYOUT ════════════════════════════════════════════════ -->
+<div class="d-flex">
+
+  <!-- Sidebar -->
+  <div class="sidebar d-none d-md-block">
+    <div class="sidebar-item active">
+      <i class="fas fa-graduation-cap"></i> Minhas Aulas
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-book-open"></i> Gramática
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-headphones"></i> Listening
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-microphone"></i> Speaking
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-file-pdf"></i> Materiais PDF
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-music"></i> Músicas
+    </div>
+    <hr class="mx-3 text-secondary" />
+    <div class="sidebar-item">
+      <i class="fas fa-chart-bar"></i> Meu Progresso
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-cog"></i> Configurações
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Alerta API Key -->
+    <div id="alerta-apikey" style="display:none;">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      <strong>API Key não configurada!</strong> No <code>.env</code> use
+      <code>OPENROUTER_API_KEY</code> + <code>LLM_PROVIDER=openrouter</code>
+      (<a href="https://openrouter.ai/keys" target="_blank" class="text-warning fw-semibold">openrouter.ai/keys</a>)
+      ou <code>GEMINI_API_KEY</code> — reinicie o servidor.
+    </div>
+
+    <!-- Painel MVP: simular login do aluno -->
+    <div class="mvp-config">
+      <h6><i class="fas fa-flask me-2"></i>Painel de Teste — MVP Professora Sofia</h6>
+      <p class="text-muted small mb-2">
+        Simula o aluno da plataforma Talk Method. O <strong>nível recomendado</strong> segue a divisão IA do documento
+        (unidades 1–20 Sofia, 21–40 Paul, 41+ Kate); no chat o aluno pode escolher um nível maior para se arriscar.
+      </p>
+      <p class="mb-3 d-flex flex-wrap gap-2">
+        <a href="#" id="link-aula-ia" class="btn btn-sm btn-primary">
+          <i class="fas fa-video me-1"></i>Abrir aula ao vivo (Meet)
+        </a>
+        <a href="/validar-divisao.html" class="btn btn-sm btn-outline-secondary">
+          <i class="fas fa-clipboard-check me-1"></i>Validar divisão IA
+        </a>
+        <a href="/preview-professoras.html" class="btn btn-sm btn-outline-primary">
+          <i class="fas fa-images me-1"></i>Preview professoras
+        </a>
+      </p>
+      <div class="row g-2 align-items-end">
+        <div class="col-sm-3">
+          <label>Nome do aluno</label>
+          <input type="text" id="input-nome" class="form-control" value="Maria" placeholder="Nome do aluno" />
+        </div>
+        <div class="col-sm-2">
+          <label>Unidade atual <span class="text-muted">(Talk)</span></label>
+          <input type="number" id="input-unidade" class="form-control" min="1" max="110" value="8" title="Unidade Talk Method (1–110)" />
+        </div>
+        <div class="col-sm-3">
+          <label>Nível recomendado <span class="text-muted">(progresso)</span></label>
+          <select id="select-recomendado" class="form-select" disabled>
+            <option value="iniciante">🟢 Básico</option>
+            <option value="intermediario">🔵 Intermediário</option>
+            <option value="avancado">🔴 Avançado</option>
+          </select>
+        </div>
+        <div class="col-sm-3">
+          <label>Professora no chat</label>
+          <select id="select-estagio" class="form-select">
+            <option value="iniciante">🟢 Sofia — Básico</option>
+            <option value="intermediario">🔵 Paul — Intermediário</option>
+            <option value="avancado">🔴 Kate — Avançado</option>
+          </select>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-iniciar w-100" onclick="configurarAluno()" title="Aplicar e abrir chat">
+            <i class="fas fa-sign-in-alt"></i>
+          </button>
+        </div>
+      </div>
+      <p class="text-muted small mt-2 mb-0" id="hint-desafio" style="display:none;"></p>
+      <div id="config-info" class="mt-2 text-muted small" style="display:none;"></div>
+    </div>
+
+    <!-- Título -->
+    <div class="d-flex align-items-center gap-2 mb-4">
+      <h4 class="fw-bold mb-0">Minhas Aulas</h4>
+      <span class="badge bg-light text-secondary border">600 aulas</span>
+    </div>
+
+    <!-- Módulo 1 -->
+    <h6 class="text-muted fw-semibold mb-3 text-uppercase" style="font-size:.75rem;letter-spacing:1px;">
+      Módulo 1 — Iniciante
+    </h6>
+    <div class="lesson-card">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div>
+          <span class="lesson-badge badge-iniciante me-2">Iniciante</span>
+          <span class="lesson-badge bg-success bg-opacity-10 text-success">Concluída</span>
+        </div>
+        <span class="text-muted small">Aula 1</span>
+      </div>
+      <h6 class="fw-semibold mb-1">Greetings & Introductions</h6>
+      <p class="text-muted small mb-2">Hello, Goodbye, What's your name? How are you?</p>
+      <div class="lesson-progress"><div class="bar" style="width:100%"></div></div>
+    </div>
+    <div class="lesson-card">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div>
+          <span class="lesson-badge badge-iniciante me-2">Iniciante</span>
+          <span class="lesson-badge bg-success bg-opacity-10 text-success">Concluída</span>
+        </div>
+        <span class="text-muted small">Aula 2</span>
+      </div>
+      <h6 class="fw-semibold mb-1">Numbers & Colors</h6>
+      <p class="text-muted small mb-2">Numbers 1–10, Basic colors, Verb TO BE</p>
+      <div class="lesson-progress"><div class="bar" style="width:100%"></div></div>
+    </div>
+    <div class="lesson-card">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div>
+          <span class="lesson-badge badge-iniciante me-2">Iniciante</span>
+          <span class="lesson-badge bg-warning bg-opacity-10 text-warning">Em andamento</span>
+        </div>
+        <span class="text-muted small">Aula 3</span>
+      </div>
+      <h6 class="fw-semibold mb-1">Family & Feelings</h6>
+      <p class="text-muted small mb-2">Family members, Adjectives: happy, sad, tired...</p>
+      <div class="lesson-progress"><div class="bar" style="width:60%"></div></div>
+    </div>
+
+    <!-- Módulo 2 -->
+    <h6 class="text-muted fw-semibold mb-3 mt-4 text-uppercase" style="font-size:.75rem;letter-spacing:1px;">
+      Módulo 2 — Intermediário
+    </h6>
+    <div class="lesson-card" style="opacity:.6;">
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <div>
+          <span class="lesson-badge badge-intermed me-2">Intermediário</span>
+          <span class="lesson-badge bg-secondary bg-opacity-10 text-secondary">Bloqueada</span>
+        </div>
+        <span class="text-muted small">Aula 4</span>
+      </div>
+      <h6 class="fw-semibold mb-1">Daily Routine</h6>
+      <p class="text-muted small mb-2">Present simple, Frequency adverbs, Time expressions</p>
+      <div class="lesson-progress"><div class="bar" style="width:0%"></div></div>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /layout -->
+
+
+<!-- ═══ CHAT WIDGET ══════════════════════════════════════════ -->
+
+<!-- Botão flutuante -->
+<button id="btn-sofia" class="btn-sofia-float" onclick="toggleChat()" title="Conversar com sua professora">
+  <i class="fas fa-seedling" id="btn-sofia-icone"></i>
+  <span class="sofia-tooltip">Professora Sofia</span>
+</button>
+
+<!-- Modal / Janela do chat -->
+<div id="chat-sofia" class="chat-sofia-window" style="display:none;">
+
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="d-flex align-items-center gap-2">
+      <div class="sofia-avatar" id="chat-header-avatar">
+        <img src="/images/professora-sofia.png" alt="Professora Sofia" />
+      </div>
+      <div>
+        <div class="chat-header-name" id="chat-header-name">Professora Sofia</div>
+        <div class="chat-header-sub" id="chat-subtitulo">Talk Method — Básico</div>
+      </div>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <span class="online-dot" id="online-dot"></span>
+      <button class="btn-chat-close" onclick="toggleChat()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mensagens -->
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-placeholder" id="chat-placeholder">
+      <div class="sofia-avatar-lg">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <p class="mt-3 mb-1 fw-semibold text-secondary" id="chat-intro-titulo">Olá! Sou a Professora Sofia.</p>
+      <p class="text-muted small mb-3" id="chat-intro-sub">Material do Talk Method — nível Básico.</p>
+      <button class="btn btn-sm btn-iniciar-chat" id="btn-iniciar-chat" onclick="iniciarChat()">
+        <i class="fas fa-comments me-2"></i>Iniciar conversa
+      </button>
+    </div>
+  </div>
+
+  <!-- Typing indicator -->
+  <div class="typing-indicator" id="typing-indicator" style="display:none;">
+    <div class="sofia-avatar-sm">
+      <i class="fas fa-graduation-cap"></i>
+    </div>
+    <div class="typing-dots">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-area" id="chat-input-area" style="display:none;">
+    <input
+      type="text"
+      id="chat-input"
+      class="chat-input"
+      placeholder="Type in English..."
+      maxlength="500"
+      onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); enviarMensagem(); }"
+    />
+    <button class="btn-send" id="btn-send" onclick="enviarMensagem()">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+
+</div><!-- /chat-sofia-window -->
+
+
+<!-- ═══ PAINEL ADMIN DE VOCABULÁRIO (oculto, abre via botão) ══ -->
+<div class="modal fade" id="modalAdmin" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold">
+          <i class="fas fa-database me-2 text-purple"></i>Gerenciar Vocabulário por Estágio
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" id="tabEstagios">
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#tab-ini" onclick="carregarAdmin('iniciante')">🟢 Iniciante</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#tab-int" onclick="carregarAdmin('intermediario')">🔵 Intermediário</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#tab-ava" onclick="carregarAdmin('avancado')">🔴 Avançado</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab-ini">
+            <div id="admin-form-iniciante"></div>
+          </div>
+          <div class="tab-pane" id="tab-int">
+            <div id="admin-form-intermediario"></div>
+          </div>
+          <div class="tab-pane" id="tab-ava">
+            <div id="admin-form-avancado"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/professora-chat.js"></script>
+
+<script>
+// ── Configuração do aluno (painel MVP) ──────────────────────
+
+const ESTAGIO_LABEL = {
+  iniciante: '🟢 Básico',
+  intermediario: '🔵 Intermediário',
+  avancado: '🔴 Avançado',
+};
+const ORDEM_ESTAGIO = { iniciante: 0, intermediario: 1, avancado: 2 };
+
+let alunoConfig = {
+  id: 'demo-001',
+  nome: 'Maria',
+  unidadeAtual: 8,
+  estagioRecomendado: 'iniciante',
+  estagioAtivo: 'iniciante',
+};
+window.alunoConfig = alunoConfig;
+let sessaoAtual = null;
+
+function inferirEstagioPorUnidade(u) {
+  if (u <= 20) return 'iniciante';
+  if (u <= 40) return 'intermediario';
+  return 'avancado';
+}
+
+function atualizarRecomendadoPorUnidade() {
+  const u = parseInt($('#input-unidade').val(), 10) || 1;
+  alunoConfig.unidadeAtual = u;
+  alunoConfig.estagioRecomendado = inferirEstagioPorUnidade(u);
+  $('#select-recomendado').val(alunoConfig.estagioRecomendado);
+  if (!$('#select-estagio').data('manual')) {
+    $('#select-estagio').val(alunoConfig.estagioRecomendado);
+  }
+  atualizarHintDesafio();
+}
+
+function atualizarHintDesafio() {
+  const ativo = $('#select-estagio').val();
+  const rec = alunoConfig.estagioRecomendado;
+  const subiu = ORDEM_ESTAGIO[ativo] > ORDEM_ESTAGIO[rec];
+  if (subiu) {
+    $('#hint-desafio')
+      .html('<i class="fas fa-rocket text-warning me-1"></i>Modo desafio: praticando acima do nível recomendado (' + ESTAGIO_LABEL[rec] + ' → ' + ESTAGIO_LABEL[ativo] + ').')
+      .show();
+  } else {
+    $('#hint-desafio').hide();
+  }
+}
+
+function atualizarLinkAulaIa() {
+  const q = new URLSearchParams({
+    nome: alunoConfig.nome || 'Aluno',
+    unidade: String(alunoConfig.unidadeAtual || 8),
+    alunoId: alunoConfig.id || 'demo',
+    estagio: alunoConfig.estagioAtivo || 'iniciante',
+  });
+  $('#link-aula-ia').attr('href', '/aula-ia.html?' + q.toString());
+}
+
+// Verifica se API key está configurada ao carregar
+$(document).ready(function () {
+  $.get('/api/status', function (data) {
+    if (!data.configurado) {
+      $('#alerta-apikey').show();
+    } else {
+      console.log('✅ LLM:', data.provedorLabel || data.modelo);
+    }
+  });
+  $('#input-unidade').on('input', atualizarRecomendadoPorUnidade);
+  $('#select-estagio').on('change', function () {
+    $(this).data('manual', true);
+    alunoConfig.estagioAtivo = $(this).val();
+    if (typeof aplicarTemaProfessora === 'function') aplicarTemaProfessora(alunoConfig.estagioAtivo);
+    atualizarHintDesafio();
+    atualizarUIAluno();
+  });
+  atualizarRecomendadoPorUnidade();
+  if (typeof aplicarTemaProfessora === 'function') aplicarTemaProfessora(alunoConfig.estagioAtivo);
+  atualizarUIAluno();
+  atualizarLinkAulaIa();
+  $('#input-nome, #input-unidade, #select-estagio').on('input change', atualizarLinkAulaIa);
+});
+
+function configurarAluno() {
+  alunoConfig.nome = $('#input-nome').val().trim() || 'Aluno';
+  alunoConfig.unidadeAtual = parseInt($('#input-unidade').val(), 10) || 1;
+  alunoConfig.estagioRecomendado = $('#select-recomendado').val();
+  alunoConfig.estagioAtivo = $('#select-estagio').val();
+  alunoConfig.id = 'talk-' + alunoConfig.unidadeAtual;
+  window.alunoConfig = alunoConfig;
+  sessaoAtual = null;
+
+  const desafio = ORDEM_ESTAGIO[alunoConfig.estagioAtivo] > ORDEM_ESTAGIO[alunoConfig.estagioRecomendado]
+    ? ' <span class="badge bg-warning text-dark">modo desafio</span>' : '';
+
+  $('#config-info')
+    .html(
+      '<i class="fas fa-check-circle text-success me-1"></i>Aluno: <strong>' + alunoConfig.nome +
+      '</strong> | Unidade ' + alunoConfig.unidadeAtual +
+      ' | Recomendado: <strong>' + ESTAGIO_LABEL[alunoConfig.estagioRecomendado] + '</strong>' +
+      ' | Chat: <strong>' + ESTAGIO_LABEL[alunoConfig.estagioAtivo] + '</strong>' + desafio
+    )
+    .show();
+
+  atualizarUIAluno();
+  atualizarLinkAulaIa();
+  resetarChat();
+
+  setTimeout(function () {
+    $('#chat-sofia').show();
+    iniciarChat();
+  }, 300);
+}
+
+const NOMES_PROFESSORA = { iniciante: 'Sofia', intermediario: 'Paul', avancado: 'Kate' };
+
+function atualizarUIAluno() {
+  $('#span-nome-aluno').text('Bem-vindo, ' + alunoConfig.nome);
+  const subiu = ORDEM_ESTAGIO[alunoConfig.estagioAtivo] > ORDEM_ESTAGIO[alunoConfig.estagioRecomendado];
+  const nomeProf = NOMES_PROFESSORA[alunoConfig.estagioAtivo] || 'Sofia';
+  $('#chat-subtitulo').text(
+    'Professora ' + nomeProf + ' · Talk Method ' + ESTAGIO_LABEL[alunoConfig.estagioAtivo].replace(/^..\s/, '') +
+    (subiu ? ' · desafio' : '')
+  );
+}
+window.atualizarUIAluno = atualizarUIAluno;
+
+// Painel Admin
+function abrirAdmin() {
+  carregarAdmin('iniciante');
+  new bootstrap.Modal(document.getElementById('modalAdmin')).show();
+}
+
+function carregarAdmin(estagio) {
+  $.get('/api/materiais', function (data) {
+    const m = data[estagio];
+    const html = `
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Vocabulário <span class="text-muted">(1 palavra por linha)</span></label>
+        <textarea class="form-control font-monospace" rows="8" id="admin-vocab-${estagio}">${m.vocabulario.join('\n')}</textarea>
+        <div class="text-muted small mt-1">${m.vocabulario.length} palavras</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Estruturas gramaticais <span class="text-muted">(1 por linha)</span></label>
+        <textarea class="form-control font-monospace" rows="5" id="admin-gram-${estagio}">${m.gramatica.join('\n')}</textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold small">Tópicos <span class="text-muted">(1 por linha)</span></label>
+        <textarea class="form-control font-monospace" rows="4" id="admin-top-${estagio}">${(m.topicos||[]).join('\n')}</textarea>
+      </div>
+      <button class="btn btn-iniciar" onclick="salvarAdmin('${estagio}')">
+        <i class="fas fa-save me-2"></i>Salvar ${estagio}
+      </button>
+      <span id="admin-msg-${estagio}" class="ms-3 text-success small" style="display:none;">✓ Salvo!</span>
+    `;
+    $(`#admin-form-${estagio}`).html(html);
+  });
+}
+
+function salvarAdmin(estagio) {
+  const vocabulario = $(`#admin-vocab-${estagio}`).val().split('\n').map(v => v.trim()).filter(Boolean);
+  const gramatica   = $(`#admin-gram-${estagio}`).val().split('\n').map(v => v.trim()).filter(Boolean);
+  const topicos     = $(`#admin-top-${estagio}`).val().split('\n').map(v => v.trim()).filter(Boolean);
+
+  $.ajax({
+    url: `/api/materiais/${estagio}`,
+    method: 'PUT',
+    contentType: 'application/json',
+    data: JSON.stringify({ vocabulario, gramatica, topicos }),
+    success: function () {
+      $(`#admin-msg-${estagio}`).show();
+      setTimeout(() => $(`#admin-msg-${estagio}`).hide(), 3000);
+      $(`#admin-form-${estagio} .text-muted.small`).first().text(vocabulario.length + ' palavras');
+    }
+  });
+}
+</script>
+
+</body>
+</html>
